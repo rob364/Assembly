@@ -1,0 +1,53 @@
+.data
+	msg1: .asciiz "\nDigite um numero inteiro: "
+	msgigual: .asciiz "\nSão iguais"
+	msgmaior: .asciiz "\nO primeiro e maior que o segundo"
+	msgmenor: .asciiz "\nO segundo e maior que o primeiro"
+.text
+main:
+	
+	#Condicional sequencial
+
+	li $v0, 4	#Escrever caracteres		
+	la $a0, msg1	#Passando para a0 (variavel que vai imprimir em tela) o valor de msg1		
+	syscall
+	
+	li $v0, 5 	#Ler numeros inteiro			
+	syscall		#Leitura do valor que ficara temporariamente, no registrador v0			
+	add $t1, $v0, $zero #Soma, em t1, o valor de v0 com 0. Apenas para movimentação.
+
+	li $v0, 4       #Escrever caracteres				
+	la $a0, msg1	#Passando para a0 (Variavel que imprimir em tela) o valor de msg1		
+	syscall
+	
+	li $v0, 5 	#Ler numeros interios			
+	syscall		 #Leitura do valor que ficara temporariamente, no registrador v0				
+	add $t2, $v0, $zero #Soma, em t2, o valor de v0 com 0. Apenas para movimentação.		
+
+	beq $t1, $t2, igual		
+	sgt $t3,$t1, $t2     #comparação se é igual os numeros digitados pelo usuario
+	beq $t3,$zero,maior
+	slt $t4,$t1, $t2     #o numero é maior ou menor
+	beq $t4,$zero,menor
+
+	igual:
+	      li $v0, 4
+	      la $a0, msgigual #sendo salta para fim
+	      syscall
+	      j $ra					
+
+	maior:
+	      li $v0, 4
+	      la $a0, msgmenor #sendo menor salta para o fim
+	      syscall
+	      j $ra					
+	
+	menor:
+	      li $v0, 4
+	      la $a0, msgmaior #sendo maior salta para o fim
+	      syscall
+	      j $ra	
+	
+	j$ra
+	
+	
